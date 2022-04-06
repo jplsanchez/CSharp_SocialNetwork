@@ -1,0 +1,50 @@
+version: '3.3'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - my-db:/var/lib/rabbitmq/
+        - my-db:/var/log/rabbitmq
+    #networks:
+    #    - rabbitmq_go_net
+
+  mysqldb:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'mysqldb'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+    
+  mongo:
+    image: mongo:5.0
+    restart: always
+    ports:
+        - '27017:27017'
+    expose:
+        - '27017' 
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'root'
+      MONGO_INITDB_ROOT_PASSWORD: 'root'
+    volumes:
+      - my-db:/var/lib/mongodb
+
+#networks:
+#  rabbitmq_go_net:
+#    driver: bridge
+
+volumes:
+  my-db:
+
+
