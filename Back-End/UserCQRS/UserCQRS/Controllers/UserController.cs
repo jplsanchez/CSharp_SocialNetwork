@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using User.Domain.Commands.User;
 using User.Domain.Interfaces.Repositories;
@@ -8,6 +9,7 @@ namespace User.Application.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Default")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -20,36 +22,38 @@ namespace User.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancelToken)
         {
-            return Ok(await _repository.GetAll());
+            return Ok(await _repository.GetAll(cancelToken));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(Guid id, CancellationToken cancelToken)
         {
-            return Ok(await _repository.Get(id));
+            return Ok(await _repository.Get(id, cancelToken));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RegisterUserCommand command)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Post([FromBody] RegisterUserCommand command, CancellationToken cancelToken)
         {
-            var response = await _mediator.Send(command);
+            var response = await _mediator.Send(command, cancelToken);
             return Ok(response);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]  UpdateUserCommand command)
+        public async Task<IActionResult> Put([FromBody] UpdateUserCommand command, CancellationToken cancelToken)
         {
-            var response = await _mediator.Send(command);
+            var response = await _mediator.Send(command, cancelToken);
             return Ok(response);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancelToken)
         {
             var obj = new DeleteUserCommand { Id = id };
-            var response = await _mediator.Send(obj);
+            var response = await _mediator.Send(obj, cancelToken);
             return Ok(response);
         }
     }

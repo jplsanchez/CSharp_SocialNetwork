@@ -6,6 +6,7 @@ namespace User.Domain
     {
         public MongoDbSettings MongoDb { get; init; }
         public MySqlSettings MySql { get; init; }
+        public string DefaultKey { get; init; }
 
         public Settings(IConfiguration configuration)
         {
@@ -20,6 +21,8 @@ namespace User.Domain
             {
                 ConnectionString = configuration.GetSection("MySqlConnection:ConnectionString").Value,
             };
+
+            DefaultKey = configuration.GetSection("Key:DefaultKey").Value;
         }
     }
 

@@ -16,7 +16,7 @@ namespace User.Repository.Repositories
             _connectionString = settings.MySql.ConnectionString;
         }
 
-        public async Task Add(UserModel item)
+        public async Task Add(UserModel user, CancellationToken cancelToken)
         {
             try
             {
@@ -25,25 +25,24 @@ namespace User.Repository.Repositories
                     var query = "INSERT INTO  User" +
                         "(Id, Name, Age, Gender, isEnabled, Created)" +
                         "VALUES (@Id,@Name,@Age,@Gender,@isEnabled,@Created);";
-
                     await connection.ExecuteAsync(query, new
                     {
-                        item.Id,
-                        item.Name,
-                        item.Age,
-                        item.Gender,
-                        item.IsEnabled,
+                        user.Id,
+                        user.Name,
+                        user.Age,
+                        user.Gender,
+                        user.IsEnabled,
                         Created = DateTime.Now
                     });
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Falha ao se conectar ao banco SQL", ex);
+                throw new Exception("Failed to run query or to connect to SQL Database", ex);
             }
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(Guid id, CancellationToken cancelToken)
         {
             try
             {
@@ -56,11 +55,11 @@ namespace User.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Falha ao se conectar ao banco SQL", ex);
+                throw new Exception("Failed to run query or to connect to SQL Database", ex);
             }
         }
 
-        public async Task Edit(UserModel item)
+        public async Task Edit(UserModel user, CancellationToken cancelToken)
         {
             try
             {
@@ -72,17 +71,17 @@ namespace User.Repository.Repositories
 
                     await connection.ExecuteAsync(query, new
                     {
-                        item.Id,
-                        item.Name,
-                        item.Age,
-                        item.Gender,
-                        item.IsEnabled,
+                        user.Id,
+                        user.Name,
+                        user.Age,
+                        user.Gender,
+                        user.IsEnabled,
                     });
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Falha ao se conectar ao banco SQL", ex);
+                throw new Exception("Failed to run query or to connect to SQL Database", ex);
             }
         }
     }

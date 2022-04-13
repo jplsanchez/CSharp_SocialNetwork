@@ -23,7 +23,7 @@ namespace User.Repository.Contexts
             }
             catch (Exception ex)
             {
-                throw new Exception("Não foi possível se conectar ao servidor MongoDB", ex);
+                throw new Exception("Failed to connect to MongoDB server", ex);
             }
         }
 

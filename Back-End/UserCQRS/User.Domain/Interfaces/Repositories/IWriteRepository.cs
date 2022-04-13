@@ -2,10 +2,10 @@
 {
     public interface IWriteRepository<T>
     {
-        Task Add(T item);
+        Task Add(T item, CancellationToken cancelToken);
 
-        Task Edit(T item);
+        Task Edit(T item, CancellationToken cancelToken);
 
-        Task Delete(Guid id);
+        Task Delete(Guid id, CancellationToken cancelToken);
     }
 }

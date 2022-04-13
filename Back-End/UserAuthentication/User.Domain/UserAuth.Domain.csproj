@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SharedEvents\User.Shared.csproj" />
+    <ProjectReference Include="..\SharedEvents\UserAuth.Shared.csproj" />
   </ItemGroup>
 
 </Project>

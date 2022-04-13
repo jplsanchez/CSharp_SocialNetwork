@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using User.Domain.Commands.User;
 using User.Domain.Interfaces.Repositories;
 using User.Domain.Models;
@@ -10,21 +11,23 @@ namespace User.Domain.Handlers.CommandHandler
     {
         private readonly IMediator _mediator;
         private readonly IWriteRepository<UserModel> _repository;
+        private readonly IMapper _mapper;
 
-        public UpdateUserCommandHandler(IMediator mediator, IWriteRepository<UserModel> repository)
+        public UpdateUserCommandHandler(IMediator mediator, IWriteRepository<UserModel> repository, IMapper mapper)
         {
             _mediator = mediator;
             _repository = repository;
+            _mapper = mapper;
         }
 
-        public async Task<string> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateUserCommand request, CancellationToken cancelToken)
         {
             UserModel user = CreateUserFromRequest(request);
 
             try
             {
-                await _repository.Edit(user);
-                await PublishNotification(user, true);
+                await _repository.Edit(user, cancelToken);
+                await PublishNotification(user, true, cancelToken);
 
                 return await Task.FromResult("Usuário alterado com sucesso");
             }
@@ -39,20 +42,21 @@ namespace User.Domain.Handlers.CommandHandler
 
         private static UserModel CreateUserFromRequest(UpdateUserCommand request)
         {
-            return new() { Id = request.Id, Name = request.Name, Age = request.Age, Gender = request.Gender };
+            return new()
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Age = request.Age,
+                Gender = request.Gender,
+                IsEnabled = request.Enable
+            };
         }
 
-        private Task PublishNotification(UserModel user, bool isEffective)
+        private Task PublishNotification(UserModel user, bool isEffective, CancellationToken cancelToken = default)
         {
-            return _mediator.Publish(
-                new UserUpdatedNotification
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Age = user.Age,
-                    Gender = user.Gender,
-                    IsEffective = isEffective
-                });
+            var userDto = _mapper.Map<UserUpdatedNotification>(user);
+
+            return _mediator.Publish(userDto with { IsEffective = isEffective }, cancelToken);
         }
     }
 }

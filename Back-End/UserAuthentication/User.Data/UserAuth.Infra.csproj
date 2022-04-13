@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
+    <ProjectReference Include="..\User.Domain\UserAuth.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

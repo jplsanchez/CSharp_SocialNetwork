@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SharedEvents\User.Shared.csproj" />
-    <ProjectReference Include="..\User.Data\User.Infra.csproj" />
-    <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
+    <ProjectReference Include="..\SharedEvents\UserAuth.Shared.csproj" />
+    <ProjectReference Include="..\User.Data\UserAuth.Infra.csproj" />
+    <ProjectReference Include="..\User.Domain\UserAuth.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,12 +17,12 @@ namespace User.Domain.Handlers.CommandHandler
             _repository = repository;
         }
 
-        public async Task<string> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeleteUserCommand request, CancellationToken cancelToken)
         {
             try
             {
-                await _repository.Delete(request.Id);
-                await PublishNotification(request, true);
+                await _repository.Delete(request.Id, cancelToken);
+                await PublishNotification(request, true, cancelToken);
 
                 return await Task.FromResult("Usuário deletado com sucesso");
             }
@@ -35,14 +35,14 @@ namespace User.Domain.Handlers.CommandHandler
             }
         }
 
-        private Task PublishNotification(DeleteUserCommand request, bool isEffective)
+        private Task PublishNotification(DeleteUserCommand request, bool isEffective, CancellationToken cancelToken = default)
         {
             return _mediator.Publish(
                 new UserDeletedNotification
                 {
                     Id = request.Id,
                     IsEffective = isEffective
-                });
+                }, cancelToken);
         }
     }
 }

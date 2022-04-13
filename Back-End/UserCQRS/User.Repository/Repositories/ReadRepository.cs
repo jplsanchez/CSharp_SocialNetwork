@@ -16,7 +16,7 @@ namespace User.Repository.Repositories
             _collection = Utils.GetModelShortName(typeof(T).Name);
         }
 
-        public async Task<T> Get(Guid id)
+        public async Task<T> Get(Guid id, CancellationToken cancelToken)
         {
             var collection = _mongoDbContext.Database.GetCollection<T>(_collection);
 
@@ -24,18 +24,18 @@ namespace User.Repository.Repositories
             var filter = filterBuilder.Eq(x => x.Id, id);
             filter &= filterBuilder.Eq(x => x.IsEnabled, true);
 
-            var result = await collection.FindAsync(filter);
-            return result.FirstOrDefault();
+            var result = await collection.FindAsync(filter, null, cancelToken);
+            return result.FirstOrDefault(cancelToken);
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll(CancellationToken cancelToken)
         {
             var collection = _mongoDbContext.Database.GetCollection<T>(_collection);
 
             var filterBuilder = Builders<T>.Filter;
             var filter = filterBuilder.Eq(x => x.IsEnabled, true);
 
-            var result = await collection.FindAsync(filter);
+            var result = await collection.FindAsync(filter, null, cancelToken);
             return result.ToList();
         }
     }

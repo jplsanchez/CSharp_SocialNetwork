@@ -5,6 +5,8 @@ namespace User.Domain.Interfaces
 {
     public interface ITokenService
     {
-        Token CreateToken(IdentityUser<Guid> user);
+        Token GenerateToken(IdentityUser<Guid> user, int expirationTime);
+
+        Token GenerateToken(IdentityUser<Guid> user, int expirationTime, IEnumerable<string> roles);
     }
 }

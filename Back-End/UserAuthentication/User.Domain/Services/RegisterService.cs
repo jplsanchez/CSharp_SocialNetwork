@@ -2,8 +2,8 @@
 using FluentResults;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using User.Domain.Entities.DTO;
-using User.Domain.Entities.Models;
 using User.Domain.Interfaces;
 using User.Shared.Events;
 
@@ -13,30 +13,60 @@ namespace User.Domain.Services
     {
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser<Guid>> _userManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly ILogger<RegisterService> _logger;
 
-        public RegisterService(IMapper mapper, UserManager<IdentityUser<Guid>> userManager, IPublishEndpoint publishEndpoint)
+        public RegisterService(IMapper mapper, UserManager<IdentityUser<Guid>> userManager, IPublishEndpoint publishEndpoint, ILogger<RegisterService> logger, RoleManager<IdentityRole<Guid>> roleManager)
         {
             _mapper = mapper;
             _userManager = userManager;
             _publishEndpoint = publishEndpoint;
+            _logger = logger;
+            _roleManager = roleManager;
         }
 
         public async Task<Result> RegisterUser(CreateUserDTO userDto)
         {
-            IdentityUser<Guid> identityUser = _mapper.Map<IdentityUser<Guid>>(userDto);
+            IdentityUser<Guid> user = _mapper.Map<IdentityUser<Guid>>(userDto);
 
+            Task<IdentityResult> identityResult = CreateIdentityResult(userDto, user);
+
+            await identityResult;
+            await SetDefaultRoles(user);
+
+            if (!identityResult.Result.Succeeded)
+            {
+                _logger.LogError("Create user error: {Errors}", identityResult.Result.Errors.ToString());
+                return Result.Fail("Fail while registering user");
+            }
+            await PublishUser(user);
+            _logger.LogInformation("User created and published: {id}", user.Id);
+            return Result.Ok();
+        }
+
+        private Task<IdentityResult> CreateIdentityResult(CreateUserDTO userDto, IdentityUser<Guid> identityUser)
+        {
             if (identityUser.Id == Guid.Empty) identityUser.Id = Guid.NewGuid();
 
             Task<IdentityResult> identityResult = _userManager.CreateAsync(identityUser, userDto.Password);
+            return identityResult;
+        }
 
-            if (identityResult.Result.Succeeded)
-            {
-                await _publishEndpoint.Publish(new CreatedUser { Id = identityUser.Id, Name = identityUser.UserName, CreatedAt = DateTime.UtcNow });
-                Console.WriteLine($"User created: {identityUser.Id}");
-                return Result.Ok();
-            }
-            return Result.Fail("Fail while registering user");
+        private async Task SetDefaultRoles(IdentityUser<Guid> identityUser)
+        {
+            await _userManager.AddToRolesAsync(identityUser, new List<string>() { "Default" });
+        }
+
+        private async Task PublishUser(IdentityUser<Guid> user)
+        {
+            await _publishEndpoint.Publish(
+                new CreatedUser
+                {
+                    Id = user.Id,
+                    Name = user.UserName,
+                    CreatedAt = DateTime.UtcNow
+                });
         }
     }
 }

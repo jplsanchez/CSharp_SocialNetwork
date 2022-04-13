@@ -18,13 +18,13 @@ namespace User.Repository.Caching
             _logger = logger;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll(CancellationToken cancelToken)
         {
             var key = nameof(T);
             var items = _memoryCache.Get<IEnumerable<T>>(key);
             if (items == null)
             {
-                items = await _inner.GetAll();
+                items = await _inner.GetAll(cancelToken);
                 _logger.LogTrace("Cache miss for {Cachekey}", key);
                 if (items != null)
                 {
@@ -39,13 +39,13 @@ namespace User.Repository.Caching
             return items;
         }
 
-        public async Task<T> Get(Guid id)
+        public async Task<T> Get(Guid id, CancellationToken cancelToken)
         {
             var key = $"{nameof(T)}:{id}";
             var items = _memoryCache.Get<T>(key);
             if (items == null)
             {
-                items = await _inner.Get(id);
+                items = await _inner.Get(id, cancelToken);
                 _logger.LogTrace("Cache miss for {Cachekey}", key);
                 if (items != null)
                 {

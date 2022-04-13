@@ -2,8 +2,8 @@
 {
     public interface IReadRepository<T>
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(CancellationToken cancelToken);
 
-        Task<T> Get(Guid id);
+        Task<T> Get(Guid id, CancellationToken cancelToken);
     }
 }

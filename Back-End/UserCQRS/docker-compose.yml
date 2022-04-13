@@ -40,11 +40,23 @@ services:
     volumes:
       - my-db:/var/lib/mongodb
 
+  postgresdb:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    ports:
+      - '5432:5432'
+    volumes: 
+      - autenth-db:/var/lib/postgresql/data
+
 #networks:
 #  rabbitmq_go_net:
 #    driver: bridge
 
 volumes:
   my-db:
+  autenth-db:
 
 

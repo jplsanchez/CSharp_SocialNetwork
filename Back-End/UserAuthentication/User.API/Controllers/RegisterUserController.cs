@@ -22,7 +22,7 @@ namespace User.API.Controllers
 
             if (result.IsFailed)
             {
-                return StatusCode(500);
+                return StatusCode(500); 
             }
             return Ok();
         }

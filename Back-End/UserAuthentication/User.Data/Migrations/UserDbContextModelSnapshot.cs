@@ -47,6 +47,22 @@ namespace User.Infra.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("622c3321-2018-4a9e-a4c8-ebe14c4e31a1"),
+                            ConcurrencyStamp = "8e7dc570-09ce-4f53-b204-e854376d5356",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("b7213d7e-dfb7-4132-88ea-befd56cfccce"),
+                            ConcurrencyStamp = "c380d22c-eb77-42b8-81b0-07c98d1c3a60",
+                            Name = "Default",
+                            NormalizedName = "DEFAULT"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -136,6 +152,24 @@ namespace User.Infra.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("403a5308-8339-45f8-97db-be2f3eafff7d"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "78f9196f-a0b7-4602-a92f-db760b0a15a2",
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAENyEO8hCalLduclYKstB3WnPixtS0O2lMNRPgjIPbgWQbpl3ksh/TA8mArKl/Gsobg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "69dc4835-b05a-4ed3-b394-e3246d85e828",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
@@ -196,6 +230,18 @@ namespace User.Infra.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("403a5308-8339-45f8-97db-be2f3eafff7d"),
+                            RoleId = new Guid("622c3321-2018-4a9e-a4c8-ebe14c4e31a1")
+                        },
+                        new
+                        {
+                            UserId = new Guid("403a5308-8339-45f8-97db-be2f3eafff7d"),
+                            RoleId = new Guid("b7213d7e-dfb7-4132-88ea-befd56cfccce")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

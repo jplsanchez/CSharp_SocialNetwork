@@ -1,11 +1,11 @@
 ﻿namespace User.Domain.Interfaces.Sync
 {
-    public interface IDatabasesSync<T>
+    public interface IDatabasesSyncRepo<T>
     {
-        Task Add(T item, CancellationToken cancellationToken);
+        Task Add(T item, CancellationToken cancelToken);
 
-        Task Edit(T item, CancellationToken cancellationToken);
+        Task Edit(T item, CancellationToken cancelToken);
 
-        Task Delete(Guid id, CancellationToken cancellationToken);
+        Task Delete(Guid id, CancellationToken cancelToken);
     }
 }

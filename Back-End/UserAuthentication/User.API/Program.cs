@@ -23,6 +23,7 @@ builder.Services.ResolveDependencies();
 
 builder.Services.ConfigureMassTransit();
 
+builder.Services.AddLogging();
 #endregion MyConfig
 
 var app = builder.Build();

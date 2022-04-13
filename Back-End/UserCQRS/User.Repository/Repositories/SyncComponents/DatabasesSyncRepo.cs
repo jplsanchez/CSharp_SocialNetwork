@@ -5,25 +5,25 @@ using User.Repository.Contexts;
 
 namespace User.Repository.SyncComponents
 {
-    public class DatabasesSync<T> : IDatabasesSync<T> where T : BaseModel
+    public class DatabasesSyncRepo<T> : IDatabasesSyncRepo<T> where T : BaseModel
     {
         private readonly MongoDbContext _mongoDbContext;
         private readonly string _collection;
 
-        public DatabasesSync(MongoDbContext mongoDbContext)
+        public DatabasesSyncRepo(MongoDbContext mongoDbContext)
         {
             _mongoDbContext = mongoDbContext;
             _collection = Utils.GetModelShortName(typeof(T).Name);
         }
 
-        public async Task Add(T item, CancellationToken cancellationToken)
+        public async Task Add(T item, CancellationToken cancelToken)
         {
             var collection = _mongoDbContext.Database.GetCollection<T>(_collection);
 
             await collection.InsertOneAsync(item);
         }
 
-        public async Task Delete(Guid id, CancellationToken cancellationToken)
+        public async Task Delete(Guid id, CancellationToken cancelToken)
         {
             var collection = _mongoDbContext.Database.GetCollection<T>(_collection);
 
@@ -33,7 +33,7 @@ namespace User.Repository.SyncComponents
             await collection.DeleteOneAsync(filter);
         }
 
-        public async Task Edit(T item, CancellationToken cancellationToken)
+        public async Task Edit(T item, CancellationToken cancelToken)
         {
             var collection = _mongoDbContext.Database.GetCollection<T>(_collection);
             await collection.ReplaceOneAsync(x => x.Id == item.Id, item);
