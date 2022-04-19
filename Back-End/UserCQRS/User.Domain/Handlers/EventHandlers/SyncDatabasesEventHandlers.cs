@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using User.Domain.Interfaces.Sync;
 using User.Domain.Models;
@@ -13,11 +14,13 @@ namespace User.Domain.EventHandlers
     {
         private readonly IDatabasesSyncRepo<UserModel> _repository;
         private readonly ILogger<SyncDatabasesEventHandlers> _logger;
+        private readonly IMapper _mapper;
 
-        public SyncDatabasesEventHandlers(IDatabasesSyncRepo<UserModel> repository, ILogger<SyncDatabasesEventHandlers> logger)
+        public SyncDatabasesEventHandlers(IDatabasesSyncRepo<UserModel> repository, ILogger<SyncDatabasesEventHandlers> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task Handle(UserCreatedNotification notification, CancellationToken cancelToken)
@@ -26,13 +29,16 @@ namespace User.Domain.EventHandlers
             {
                 if (notification.IsEffective)
                 {
-                    UserModel user = new()
-                    {
-                        Id = notification.Id,
-                        Name = notification.Name,
-                        Age = notification.Age,
-                        Gender = notification.Gender,
-                    };
+                    var user = _mapper.Map<UserModel>(notification);
+                    //TODO: Remove comment
+
+                    //UserModel user = new()
+                    //{
+                    //    Id = notification.Id,
+                    //    Name = notification.Name,
+                    //    Age = notification.Age,
+                    //    Gender = notification.Gender,
+                    //};
 
                     await _repository.Add(user, cancelToken);
                     _logger.LogInformation("Successfully synced to read-database");
@@ -50,13 +56,18 @@ namespace User.Domain.EventHandlers
             {
                 if (notification.IsEffective)
                 {
-                    UserModel user = new()
-                    {
-                        Id = notification.Id,
-                        Name = notification.Name,
-                        Age = notification.Age,
-                        Gender = notification.Gender,
-                    };
+
+                    var user = _mapper.Map<UserModel>(notification);
+                    //TODO: Remove comment
+
+
+                    //UserModel user = new()
+                    //{
+                    //    Id = notification.Id,
+                    //    Name = notification.Name,
+                    //    Age = notification.Age,
+                    //    Gender = notification.Gender,
+                    //};
 
                     await _repository.Edit(user, cancelToken);
                     _logger.LogInformation("Successfully synced to read-database");

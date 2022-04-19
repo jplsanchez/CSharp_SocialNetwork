@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using User.Domain.Notifications;
+using Newtonsoft.Json;
 
 namespace User.Domain.EventHandlers
 {
@@ -21,8 +22,8 @@ namespace User.Domain.EventHandlers
         {
             return Task.Run(() =>
             {
-                var message = $"User Created[{notification.IsEffective}]: '{notification.Id} - {notification.Name} - {notification.Age} - {notification.Gender}";
-
+                var message = $"User Created[{notification.IsEffective}]: ";
+                message += JsonConvert.SerializeObject(notification);
                 _logger.LogInformation(message);
             }, cancelToken);
         }
@@ -31,7 +32,8 @@ namespace User.Domain.EventHandlers
         {
             return Task.Run(() =>
             {
-                var message = $"User Updated [{notification.IsEffective}]: '{notification.Id} - {notification.Name} - {notification.Age} - {notification.Gender}";
+                var message = $"User Updated [{notification.IsEffective}]: ";
+                message += JsonConvert.SerializeObject(notification);
 
                 _logger.LogInformation(message);
             }, cancelToken);
@@ -41,7 +43,8 @@ namespace User.Domain.EventHandlers
         {
             return Task.Run(() =>
             {
-                var message = $"User Deleted[{notification.IsEffective}]: '{notification.Id}";
+                var message = $"User Deleted[{notification.IsEffective}]: ";
+                message += JsonConvert.SerializeObject(notification);
 
                 _logger.LogInformation(message);
             }, cancelToken);

@@ -41,23 +41,26 @@ namespace User.Domain.Handlers.CommandHandler
             }
         }
 
-        private static UserModel CreateUserFromRequest(RegisterUserCommand request)
+        private  UserModel CreateUserFromRequest(RegisterUserCommand request)
         {
-            return new()
-            {
-                Id = request.Id ?? Guid.NewGuid(),
-                Name = request.Name,
-                Age = request.Age,
-                Gender = request.Gender,
-                IsEnabled = request.Enable
-            };
+            //TODO: Passar mapper para o código ao invés daqui
+            request.Id = request.Id ?? Guid.NewGuid();
+            return _mapper.Map<UserModel>(request);
+            //return new()
+            //{
+            //    Id = request.Id ?? Guid.NewGuid(),
+            //    Name = request.Name,
+            //    Age = request.Age,
+            //    Gender = request.Gender,
+            //    IsEnabled = request.Enable
+            //};
         }
 
         private Task PublishNotification(UserModel user, bool isEffective, CancellationToken cancelToken = default)
         {
-            var userDto = _mapper.Map<UserCreatedNotification>(user);
+            var userNotification = _mapper.Map<UserCreatedNotification>(user);
 
-            return _mediator.Publish(userDto with { IsEffective = isEffective }, cancelToken);
+            return _mediator.Publish(userNotification with { IsEffective = isEffective }, cancelToken);
         }
     }
 }

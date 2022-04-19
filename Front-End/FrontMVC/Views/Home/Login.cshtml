@@ -1,0 +1,30 @@
+﻿@model LoginPageMVC.Models.LoginModel
+@{
+    Layout = "_LayoutLoggedOut";
+    ViewData["Title"] = "Login";
+}
+
+@if(TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
+<form asp-controller="Home" asp-action="LoginAction" method="post">
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input type="text" asp-for="Username" class="form-control" id="Username">
+    @Html.ValidationMessageFor(x => x.Username)
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" asp-for="Password" class="form-control" id="password">
+    @Html.ValidationMessageFor(x => x.Password)
+  </div>
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
+@section Scripts{
+}

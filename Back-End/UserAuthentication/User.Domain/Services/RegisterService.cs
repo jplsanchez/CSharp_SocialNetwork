@@ -41,7 +41,6 @@ namespace User.Domain.Services
                 return Result.Fail("Fail while registering user");
             }
             await PublishUser(user);
-            _logger.LogInformation("User created and published: {id}", user.Id);
             return Result.Ok();
         }
 
@@ -60,13 +59,19 @@ namespace User.Domain.Services
 
         private async Task PublishUser(IdentityUser<Guid> user)
         {
-            await _publishEndpoint.Publish(
-                new CreatedUser
-                {
-                    Id = user.Id,
-                    Name = user.UserName,
-                    CreatedAt = DateTime.UtcNow
-                });
+            var createdUser = _mapper.Map<CreatedUser>(user);
+            await _publishEndpoint.Publish(createdUser);
+            _logger.LogInformation("User created and published: {id} - {Name} - {Email}", createdUser.Id, createdUser.Name, createdUser.Email);
+
+            //TODO: DELETE COMMENT
+
+            //await _publishEndpoint.Publish(
+            //    new CreatedUser
+            //    {
+            //        Id = user.Id,
+            //        Name = user.UserName,
+            //        CreatedAt = DateTime.UtcNow
+            //    });
         }
     }
 }

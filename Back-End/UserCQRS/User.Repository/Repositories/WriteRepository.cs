@@ -23,13 +23,14 @@ namespace User.Repository.Repositories
                 using (IDbConnection connection = new MySqlConnection(_connectionString))
                 {
                     var query = "INSERT INTO  User" +
-                        "(Id, Name, Age, Gender, isEnabled, Created)" +
-                        "VALUES (@Id,@Name,@Age,@Gender,@isEnabled,@Created);";
+                        "(Id, Name, Email, Birth, Gender, isEnabled, Created)" +
+                        "VALUES (@Id,@Name, @Email,@Birth,@Gender,@isEnabled,@Created);";
                     await connection.ExecuteAsync(query, new
                     {
                         user.Id,
                         user.Name,
-                        user.Age,
+                        user.Email,
+                        user.Birth,
                         user.Gender,
                         user.IsEnabled,
                         Created = DateTime.Now
@@ -66,14 +67,15 @@ namespace User.Repository.Repositories
                 using (IDbConnection connection = new MySqlConnection(_connectionString))
                 {
                     var query = "UPDATE User " +
-                        "SET Name=@Name, Age=@Age, Gender=@Gender , isEnabled=@isEnabled " +
+                        "SET Name=@Name, Email=@Email, Birth=@Birth, Gender=@Gender , isEnabled=@isEnabled " +
                         "WHERE Id = @Id";
 
                     await connection.ExecuteAsync(query, new
                     {
                         user.Id,
                         user.Name,
-                        user.Age,
+                        user.Email,
+                        user.Birth,
                         user.Gender,
                         user.IsEnabled,
                     });

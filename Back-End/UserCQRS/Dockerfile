@@ -1,12 +1,15 @@
-data:
-  build: docker/data/.
-mysql:
-  image: mysql
-  ports:
-    - "3307:3306"
-  environment:
-    MYSQL_ROOT_PASSWORD: root
-  volumes:
-    - ./docker/data:/docker-entrypoint-initdb.d
-  volumes_from:
-    - data
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /app
+
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -c Release -o out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "DotNet.Docker.dll"]

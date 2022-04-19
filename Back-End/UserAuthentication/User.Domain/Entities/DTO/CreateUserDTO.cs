@@ -13,9 +13,6 @@ namespace User.Domain.Entities.DTO
         public string Email { get; set; }
 
         [Required]
-        public DateTime BirthDate { get; set; }
-
-        [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

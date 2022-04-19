@@ -40,16 +40,19 @@ namespace User.Domain.Handlers.CommandHandler
             }
         }
 
-        private static UserModel CreateUserFromRequest(UpdateUserCommand request)
+        private UserModel CreateUserFromRequest(UpdateUserCommand request)
         {
-            return new()
-            {
-                Id = request.Id,
-                Name = request.Name,
-                Age = request.Age,
-                Gender = request.Gender,
-                IsEnabled = request.Enable
-            };
+            //TODO: Passar mapper para o código ao invés daqui
+            return _mapper.Map<UserModel>(request);
+
+            //return new()
+            //{
+            //    Id = request.Id,
+            //    Name = request.Name,
+            //    Age = request.Age,
+            //    Gender = request.Gender,
+            //    IsEnabled = request.Enable
+            //};
         }
 
         private Task PublishNotification(UserModel user, bool isEffective, CancellationToken cancelToken = default)

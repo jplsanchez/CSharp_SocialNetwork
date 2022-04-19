@@ -6,7 +6,8 @@ namespace User.Domain.Notifications
     {
         public Guid Id { get; init; }
         public string? Name { get; init; }
-        public ushort Age { get; init; }
+        public DateTime Birth { get; set; }
+        public string? Email { get; set; }
         public char Gender { get; init; }
         public bool IsEffective { get; init; }
     }

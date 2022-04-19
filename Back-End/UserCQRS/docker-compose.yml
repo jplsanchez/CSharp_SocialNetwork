@@ -51,9 +51,6 @@ services:
     volumes: 
       - autenth-db:/var/lib/postgresql/data
 
-#networks:
-#  rabbitmq_go_net:
-#    driver: bridge
 
 volumes:
   my-db:
