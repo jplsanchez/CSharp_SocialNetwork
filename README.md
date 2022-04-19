@@ -1,69 +1,96 @@
-# SocialNetwork_Angular_dotNet
+# Project RoadMap
+---
 
-## Road Map
+# Architecture
 
-### <b>Pré-requisitos</b>
+## User Architecture
 
-1. Login de usuário (Aluno/Professor)
-2. Cadastro de usuário (Aluno/Professor)
-3. Poder trocar mensagens com outros usuários
-4. Poder procurar outros usuários
-5. Poder adicionar/excluir usuários da lista de amizade
-6. <s>Parte de treinos (Aluno/Professor)</s> 
-7. <s>Agenda </s>
+![SN_User](https://user-images.githubusercontent.com/15274051/164091904-0f355158-2a6e-4a68-80c0-507836345d64.jpg)
 
+# Projects
 
-- Relações entre usuários da rede: estabelecer conexões entre usuários
-através de relações on-line;
-- Hierarquias de grupos: tipos de grupos para centralizar usuários com os
-mesmos interesses ou objetivos;
-- Níveis de privacidade de conteúdo: níveis de exposição de conteúdo e de
-informações pessoais;
-- Mecanismos de busca adequados ao contexto: buscas de diversos conteúdos em determinados contexto.
+## API User
 
-### <b>Telas</b>
-
-- Tela de Login
-- Home / Feed
-- Perfil
-- Lista de Amigos
-- Chat
-- <s>Agenda</s>
-
-### <b>Tarefas</b>
-- [x] Entity Framework
-- [x] Identity
-- [ ] API autenticação usuário
-- [ ] ...
-- [ ] ...
-- [ ] ...
+|Project Content|
+|---|
+|CQRS|
+|MediaTR|
+|Dapper|
+|MongoDb|
+|MySQL|
+|Event Sourcing|
+|Decorator Design Pattern|
+|Caching|
+|Docker|
+|MassTransit|
+|RabbitMQ|
+|Authentication|
+|Python|
 
 
-&nbsp;
-### <b>Diagrama de Relação de Classes</b>
-&nbsp;
+## API User Authentication
 
-![](resources/Diagrama%20Rede%20Social.jpg)
+|Project Content|
+|---|
+|Identity|
+|Token JWT|
+|Authentication|
+|Entity Framework|
+|PostgreSQL|
+|MassTransit|
+|RabbitMQ|
 
+## FrontMVC
 
-&nbsp;
-&nbsp;
+|Project Content|
+|---|
+|.NET|
+|MVC|
+|Front-End|
+|CSS|
+|HTML|
+___
+
 
 ---
 
-## Tecnlogias e Métodos para ficar de olho
+# BackLog
+### Data Access
+- [x] Identity
+- [ ] Redis
+- [x] Caching [link](https://www.youtube.com/watch?v=vC444683wHs)
+- [ ] Entity
+- [x] Dapper``
+- [x] MongoDB
+- [x] Local File
 
-- CQRS
-  - [Artigo](https://www.eduardopires.net.br/2016/07/cqrs-o-que-e-onde-aplicar/#:~:text=CQRS%20significa%20Command%20Query%20Responsibility,Sourcing%2C%20Transaction%20Script%20e%20etc.)
-- eShopOnContainers
-  - [Github](https://github.com/dotnet-architecture/eShopOnContainers)
-  - [Microsoft](https://docs.microsoft.com/pt-br/dotnet/architecture/cloud-native/introduce-eshoponcontainers-reference-app)
-- Bootstrap (workwise, OneTech)
-  - [OneTech](https://themeslab.org/html/onetech)
-  - [workwise $](https://themeforest.net/item/workwise-the-freelancer-and-social-networking-html-template/21647879)
-- SignalR 
-- TDD
+### Arquitetura / Design Pattern /  Principles
+- [x] Event Sourcing
+- [x] CQRS
+- [x] Onion Architecture
+- [x] Decorator Design Pattern
+- [x] [[SOLID]]
+- [x] [[KISS]]
+- [x] [[YAGNI]]
+- [x] [[DRY]]
+- [x] Queues
+- [ ] Test Driven Development
+- [ ] GOF Design Patterns
 
-&nbsp;
+###  .Net Base
+- [x] Async/Await
+- [x] Record
+- [x] .Net MVC
+- [x] Extension Methods
+- [x] Generics
+- [x] JWT Authentication
 
-![eShopOnContainers](resources/eShopOnContainers.jpg)
+### Ferramentas
+- [x] MediaTR
+- [x] RabbitMQ
+- [x] [MassTransit](https://masstransit-project.com/) or [NServiceBus](https://particular.net/nservicebus) or [Brighter](https://www.goparamore.io/) or [Rebus](https://github.com/rebus-org/Rebus)
+- [ ] SignalR
+- [x] xUnit
+ 
+ ---
+ 
